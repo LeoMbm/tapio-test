@@ -8,7 +8,7 @@ class ReportModel(models.Model):
     The Report is the sum of all the emissions. It should be done once a year
     """
     name = models.CharField(max_length=200, blank=True, null=True)
-    date = models.DateField(default=datetime.datetime.now, blank=True, null=True)
+    date = models.DateField()
 
 
 class SourceModel(models.Model):
