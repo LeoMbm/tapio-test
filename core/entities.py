@@ -5,6 +5,10 @@ class Report:
         self.name = name
         self.date = date
 
+    @property
+    def id(self):
+        return self._id
+
 
 class Source:
     def __init__(self, report, description, value, emission_factor, total_emission, lifetime,

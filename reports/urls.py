@@ -20,4 +20,6 @@ from .views import ReportListView, ReportDetailView, ReportCreateView
 
 urlpatterns = [
     path('', ReportListView.as_view(), name='report-list'),
+    path("create/", ReportCreateView.as_view(), name="report-create"),
+    path("<int:report_id>/", ReportDetailView.as_view(), name="report-detail"),
 ]

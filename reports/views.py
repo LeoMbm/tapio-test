@@ -1,12 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import View
-
-from core.repositories import ReportRepository
 from core.services import ReportService
 from core.entities import Report
 
-
-# Create your views here.
 
 class HomeView(View):
 
@@ -33,7 +29,7 @@ class ReportCreateView(View):
         return render(request, "reports/report_create.html")
 
     def post(self, request):
-        report_entity = Report(name=request.POST["name"], date=request.POST["date"])
+        report_entity = Report(name=request.POST["report-name"], date=request.POST["report-date"])
         report_service = ReportService()
         created_report = report_service.create_report(report_entity)
         return redirect('report-detail', report_id=created_report.id)

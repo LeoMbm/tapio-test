@@ -6,7 +6,9 @@ from .entities import Report, Source
 class ReportRepository:
 
     def create_report(self, report: Report) -> Report:
-        return ReportModel.objects.create(name=report.name, date=report.date)
+        report_created = ReportModel.objects.create(name=report.name, date=report.date)
+        report._id = report_created.id
+        return report
 
 
     def get_all_reports(self) -> List[Report]:

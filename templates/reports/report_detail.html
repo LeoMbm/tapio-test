@@ -1,0 +1,15 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Reports Detail</h1>
+            {% if report %}
+                <h2>{{ report.name }}</h2>
+                <p>Date: {{ report.date }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
