@@ -39,3 +39,9 @@ within a dict with the year as a key and the emissions as a value
 - New source could be added in reduction strategies
 - Modifications could be progressive, the growth should be partially showed when the year fits the time the growth started. e.g. I'll double my source by 2024
 - Script to generate a dummy DB
+
+
+## Bugs to fix
+
+- [ ] Fix the bug in `total_emission` 
+- > The total emission is not calculated correctly when the source is modified.
