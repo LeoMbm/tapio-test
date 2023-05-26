@@ -2,12 +2,12 @@ from typing import List
 from reports.models import ReportModel, SourceModel
 from .entities import Report, Source
 
-
 class ReportRepository:
 
     def create_report(self, report: Report) -> Report:
         report_created = ReportModel.objects.create(name=report.name, date=report.date)
         report._id = report_created.id
+        print(report_created.id)
         return report
 
 
@@ -15,7 +15,7 @@ class ReportRepository:
         report_models = ReportModel.objects.all()
         reports = []
         for report_model in report_models:
-            report = Report(name=report_model.name, date=report_model.date, _id=report_model.id)
+            report = Report(name=report_model.name, date=report_model.date, _id=report_model.id, sources=report_model.sources)
             reports.append(report)
         return reports
 
@@ -41,35 +41,35 @@ class ReportRepository:
     def get_report_by_id(self, report_id: int) -> Report:
         try:
             report_model = ReportModel.objects.get(id=report_id)
-            report = Report(name=report_model.name, date=report_model.date, _id=report_model.id)
-            return report
-        except ReportModel.DoesNotExist:
-            return {}
-
-
-    def update_report(self, report_id, report: Report) -> Report:
-        try:
-            report_model = ReportModel.objects.get(pk=report_id)
-            report_model.name = report.name
-            report_model.date = report.date
-            report_model.save()
-            return report
+            if report_model:
+                report = Report(name=report_model.name, date=report_model.date, _id=report_model.id)
+                return report
         except ReportModel.DoesNotExist:
             return None
 
 
+    def update_report(self, report_id, report: Report) -> Report:
+            report_model = ReportModel.objects.get(pk=report_id)
+            if not report_model:
+                return False
+            report_model.name = report.name
+            report_model.date = report.date
+            report_model.save()
+            return report
+
+
+
     def delete_report(self, report_id: int) -> bool:
-        try:
-            ReportModel.objects.filter(pk=report_id).delete()
+        report = ReportModel.objects.filter(pk=report_id)
+        if report:
+            report.delete()
             return True
-        except Exception as e:
-            print("Error deleting")
-            return False
+        return False
 
 
 class SourceRepository:
-
     def create_source(self, source: Source) -> Source:
+
         return SourceModel.objects.create(
             report=source.report,
             description=source.description,

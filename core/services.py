@@ -1,12 +1,13 @@
 from typing import List
 
+from reports.serializers import ReportSerializer
 from .repositories import ReportRepository, SourceRepository
 from .entities import Report, Source
 
 
 class ReportService:
-    def __init__(self, report_repository: ReportRepository = ReportRepository()):
-        self.report_repository = report_repository
+    def __init__(self):
+        self.report_repository = ReportRepository()
 
     def create_report(self, report: Report) -> Report:
         return self.report_repository.create_report(report)
@@ -31,8 +32,8 @@ class ReportService:
 
 
 class SourceService:
-    def __init__(self, source_repository: SourceRepository = SourceRepository()):
-        self.source_repository = source_repository
+    def __init__(self):
+        self.source_repository = SourceRepository()
 
     def create_source(self, source: Source) -> Source:
         return self.source_repository.create_source(source)

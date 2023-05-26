@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from reports.views import ReportListView, HomeView
+from reports.views import ReportListCreateView, HomeView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='just-home'),

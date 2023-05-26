@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import ReportListView, ReportDetailView, ReportCreateView
+from .views import ReportListCreateView, ReportDetailDeleteUpdateView, SourceListCreateView
 
 urlpatterns = [
-    path('', ReportListView.as_view(), name='report-list'),
-    path("create/", ReportCreateView.as_view(), name="report-create"),
-    path("<int:report_id>/", ReportDetailView.as_view(), name="report-detail"),
+    path('', ReportListCreateView.as_view(), name='report-list'),
+    path('<int:pk>/', ReportDetailDeleteUpdateView.as_view(), name='report-detail'),
+    path('sources/', SourceListCreateView.as_view(), name='source-list'),
 ]

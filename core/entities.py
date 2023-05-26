@@ -1,6 +1,5 @@
 class Report:
-    def __init__(self,name, date, _id=None):
-
+    def __init__(self, name, date, _id=None, sources=None):
         self._id = _id
         self.name = name
         self.date = date
@@ -21,3 +20,7 @@ class Source:
         self.lifetime = lifetime
         self.acquisition_year = acquisition_year
         self._id = _id
+
+    @property
+    def id(self):
+        return self._id

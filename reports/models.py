@@ -10,6 +10,9 @@ class ReportModel(models.Model):
     name = models.CharField(max_length=200, blank=True, null=True)
     date = models.DateField()
 
+    def __str__(self):
+        return self.name + " " + str(self.date)
+
 
 class SourceModel(models.Model):
     """
@@ -17,10 +20,13 @@ class SourceModel(models.Model):
     It could be defined as source x emission_factor = total
     """
     report = models.ForeignKey(ReportModel, on_delete=models.CASCADE, blank=True,
-                               null=True)
+                               null=True, related_name='sources')
     description = models.CharField(max_length=250, blank=True, null=True)
     value = models.FloatField(blank=True, null=True)
     emission_factor = models.FloatField(blank=True, null=True)
     total_emission = models.FloatField(blank=True, null=True, help_text="Unit in kg")
     lifetime = models.PositiveIntegerField(blank=True, null=True)
     acquisition_year = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.report.name + " " + str(self.lifetime)
