@@ -27,7 +27,7 @@ class SourceSerializer(serializers.ModelSerializer):
     description = serializers.CharField()
     value = serializers.FloatField()
     emission_factor = serializers.FloatField()
-    total_emission = serializers.FloatField()
+    total_emission = serializers.FloatField(read_only=True)
     lifetime = serializers.IntegerField()
     acquisition_year = serializers.IntegerField()
     report = serializers.PrimaryKeyRelatedField(queryset=ReportModel.objects.all())
@@ -36,3 +36,18 @@ class SourceSerializer(serializers.ModelSerializer):
         model = SourceModel
         fields = '__all__'
 
+    # def create(self, validated_data):
+    #     value = validated_data['value']
+    #     emission_factor = validated_data['emission_factor']
+    #     total_emission = value * emission_factor
+    #     validated_data['total_emission'] = total_emission
+    #     source = SourceModel.objects.create(**validated_data)
+    #     return source
+
+
+class SourceDetailsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SourceModel
+        fields = '__all__'
+        depth = 1

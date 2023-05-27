@@ -21,6 +21,12 @@ class ReportService:
     def get_all_reports(self) -> list[Report]:
         return self.report_repository.get_all_reports()
 
+    def get_report_with_amortized_emissions(self, report_id, year=None):
+        report = self.report_repository.get_report_with_amortized_emissions(report_id, year)
+        if report:
+            return report
+        return None
+
     def get_report_by_id(self, report_id: int) -> Report:
         return self.report_repository.get_report_by_id(report_id)
 
