@@ -22,5 +22,5 @@ from reports.views import ReportListCreateView, HomeView
 urlpatterns = [
     path('', HomeView.as_view(), name='just-home'),
     path('admin/', admin.site.urls),
-    path('reports/', include('reports.urls')),
+    path('api/v1/reports/', include('reports.urls')),
 ]
