@@ -374,5 +374,3 @@ You can also set a ratio to the value or change the emission factor of a source
     "message": "Source deleted successfully"
 }
 ```
-
-### Get all emission factors
