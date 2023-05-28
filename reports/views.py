@@ -14,7 +14,11 @@ class HomeView(APIView):
         message = {
             'case': 'Tapio Backend Challenge',
             'text': "I hope you like it!",
-            'details': 'i was trying to implement a clean architecture, i hope you can give me some feedback about it, thanks!'
+            'details': 'i was trying to implement a clean architecture, i hope you can give me some feedback about '
+                       'it, thanks!',
+            'docs-repo': "https://github.com/LeoMbm/tapio-test",
+
+
         }
         return Response(status=status.HTTP_200_OK, data=message)
 
@@ -132,8 +136,9 @@ class SourceListCreateView(APIView):
             serializer.data[
                 'total_emission'] = total_emission
             data = {'data': serializer.data, 'emission_with_calcul': total_emission,
-                    "emission_without_calcul": total_emission, "formula": "value * emission_factor",
+                    "formula": "value * emission_factor",
                     'id': created_source.id}
+            data['data']['total_emission'] = total_emission
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -157,7 +162,7 @@ class SourceDetailDeleteUpdate(APIView):
                 years_passed = year - source.acquisition_year
                 lifetime = source.lifetime
                 message['years_passed'] = years_passed
-                message['remaining_time'] = lifetime - years_passed
+                message['remaining_time'] = lifetime - years_passed if lifetime - years_passed > 0 else 0
                 if years_passed >= lifetime:
                     source.total_emission = 0.0
                     message['amortized_emission'] = 0.0

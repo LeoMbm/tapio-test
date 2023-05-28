@@ -4,6 +4,12 @@
 - Develop a feature and the DB architecture to support it from the already existing
 models and components of the platform. The approximative design of what the front end
 would look like is provided.
+## Note:
+I have used `Django Rest Framework` to build the API and `PostgreSQL` as a database.
+I spent a lot of time about the clean architecture and understanding how emissions works. 
+Yea I didn't manage my time properly and I didn't have enough time to do the bonus part. But all the requirements are done.
+Some things are not really clear to me (when I read the requirements I thought it was clear but when I started to code I was confused) so I made some assumptions.
+I hope you will like it, and you will give me feedback.
 ## Requirements
 Create a projection tool to allow our experts to design reduction strategies for our
 clients. The usual carbon report would have several sources attached to it. The tool
@@ -14,13 +20,13 @@ Implementation should:
 - be implemented using the Django framework
 - pay extra care to optimization
 ## Specifications
-- Allow to plan a modification to a source (either by applying a ratio to the
+- [x] Allow to plan a modification to a source (either by applying a ratio to the
 value or changing the emission_factor (EF) value)
-- Modifications could be in series e.g. I first reduce my value by 2 then I
+- [x] Modifications could be in series e.g. I first reduce my value by 2 then I
 change the EF from 42 to 3.14 (switch from diesel to electric let's say)
-- Provide information regarding the delta in total_emission regarding the source
-- Provide information regarding the delta in total_emission for the report
-- For source s with lifetime s (capital goods) the amortization should be
+- [x] Provide information regarding the delta in total_emission regarding the source
+- [x] Provide information regarding the delta in total_emission for the report
+- [x] For source s with lifetime s (capital goods) the amortization should be
 considered:
 total_emission are divided along the lifetime of the source
 after lifetime years the total_emission displaied is 0
@@ -30,9 +36,9 @@ original source could already be amortized
 5 years) in 2020, if I buy another one in 2022 (with a modification)
 both will be showed in the total emissions displaied for my
 modification. If it's in 2028, only the second one will be showed
-- When retrieving an information (by source or report ) we should be able to
+- [x] When retrieving an information (by source or report ) we should be able to
 specify a year (attention to lifetime )
-- We should be able to retrieve data for a range of years (by source or report )
+- [x] We should be able to retrieve data for a range of years (by source or report )
 within a dict with the year as a key and the emissions as a value
 ## Bonus
 - We could have several reduction strategies by report
@@ -48,6 +54,7 @@ within a dict with the year as a key and the emissions as a value
   > 
 ## Routes, Body and Response
 
+> Base URL : https://tapio.fly.dev/
 
 ### Create a new report
 
@@ -153,7 +160,6 @@ within a dict with the year as a key and the emissions as a value
     "date": "Date (mm-dd-yyyy)"  
 }
 ```
-
 - **Response:**
 ```json
 {
@@ -162,6 +168,7 @@ within a dict with the year as a key and the emissions as a value
     "date": "2023-05-30"
 }
 ```
+
 
 ### Delete a report by id
 
@@ -246,6 +253,7 @@ within a dict with the year as a key and the emissions as a value
 
 - **Route:** `/api/v1/reports/sources/{id}/`
 - **Method:** `GET`
+- **Query Params:** `?year=2023`
 - **Response:**
 ```json
 {
@@ -294,6 +302,67 @@ within a dict with the year as a key and the emissions as a value
     "report": 2
 }
 ```
+You can also set a ratio to the value or change the emission factor of a source
+- **Body:**
+```json
+{
+    "modifications": [
+            {
+                "ratio": 0.5,
+                "emission_factor": 5.0
+            },
+            {
+              "ratio": 0.5,
+              "emission_factor": 6.0
+            }
+      
+    ]
+}
+```
+
+- **Response:**
+```json
+{
+    "plan_modification": {
+        "message": "Value updated",
+        "new_value": 12.5,
+        "ratio": 0.5,
+        "formula": "value * ratio"
+    },
+    "emission_factor_modification": {
+        "message": "Emission factor updated",
+        "new_emission_factor": 6.0,
+        "new_total_emission": 75.0,
+        "formula": "value * emission_factor"
+    },
+    "list_of_modifications": [
+        {
+            "ratio": 0.5,
+            "emission_factor": 5.0
+        },
+        {
+            "ratio": 0.5,
+            "emission_factor": 6.0
+        }
+    ],
+    "average_annual_emission": 7.5,
+    "amortized_emission": 75.0,
+    "total_emission": 75.0,
+    "lifetime": "Lifetime not exceeded",
+    "data": {
+        "id": 1,
+        "description": "Vehicule",
+        "value": 12.5,
+        "emission_factor": 6.0,
+        "total_emission": 75.0,
+        "lifetime": 10,
+        "acquisition_year": 2023,
+        "report": 1
+    },
+    "delta_total_emission": -150.0
+}
+```
+
 
 ### Delete a source by id
 
